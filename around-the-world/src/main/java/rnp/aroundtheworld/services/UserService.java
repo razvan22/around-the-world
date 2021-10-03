@@ -26,4 +26,19 @@ public class UserService implements IUserService {
     public User save(User user){
         return userRepository.save(user);
     }
+
+    @Override
+    public void saveAllUsers(List<User> users) {
+        userRepository.saveAll(users);
+    }
+
+    @Override
+    public void deleteAll() {
+        userRepository.deleteAll();
+    }
+
+    public void deleteUser(Long id){
+        userRepository.deleteById(id);
+    }
+
 }

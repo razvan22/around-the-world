@@ -3,7 +3,6 @@ package rnp.aroundtheworld.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import rnp.aroundtheworld.entities.User;
-import rnp.aroundtheworld.repositories.UserRepository;
 import rnp.aroundtheworld.services.UserService;
 
 import java.util.List;
@@ -21,7 +20,6 @@ public class UserController {
        return userService.findAll();
     }
 
-
     @PostMapping("/new")
     public User addNewUser(@RequestBody User user){
         return userService.save(user);
@@ -32,4 +30,9 @@ public class UserController {
         return userService.findByEmail(email);
 
     }
+    @DeleteMapping("/delete/{id}")
+    public void deleteUser(@PathVariable Long id ){
+        userService.deleteUser(id);
+    }
+
 }
