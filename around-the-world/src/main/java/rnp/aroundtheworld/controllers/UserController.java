@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import rnp.aroundtheworld.entities.User;
 import rnp.aroundtheworld.services.Iservices.UserService;
 
+import javax.servlet.http.HttpServletRequest;
+
 
 @RestController()
 @RequestMapping("api/v1/user/")
@@ -16,18 +18,16 @@ public class UserController {
     UserService userService;
 
     @PostMapping("/new")
-    public void addNewUser(@RequestBody User user){
-        userService.save(user);
-    }
-
-    @GetMapping("/email/{email}")
-    public User changeUserEmail(@PathVariable String email){
-        return userService.findByUsername(email);
+    public ResponseEntity saveNewUser(@RequestBody User user){
+        return userService.save(user);
     }
 
     @GetMapping
-    public ResponseEntity<String> userTest(){
-        return ResponseEntity.ok().body("User Test endpoint !");
+    public User getUser(HttpServletRequest request){
+        if (userService.isUserAuthenticated(request)){
+            String userName = userService.getUserNameFromJwtToken(request);
+            return userService.findByUsername(userName);
+        } else return null;
     }
 
 }

@@ -19,15 +19,15 @@ public class DatabaseCommandsRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        userRepository.deleteAll();
+//        userRepository.deleteAll();
 
         User admin = new User(
                 "Jon",
                 "Smith",
                 "jon@gmail.com",
                 new BCryptPasswordEncoder().encode("admin"),
-                "ADMIN",
-                ""
+                "ADMIN"
+
         );
 
         User user = new User(
@@ -35,11 +35,11 @@ public class DatabaseCommandsRunner implements CommandLineRunner {
                 "Nechifor",
                 "razvan@gmail.com",
                  new BCryptPasswordEncoder().encode("password"),
-                "USER",
-                ""
+                "USER"
+
         );
 
         List<User> defaultUsers = Arrays.asList(admin,user);
-        userRepository.saveAll(defaultUsers);
+//        userRepository.saveAll(defaultUsers);
     }
 }

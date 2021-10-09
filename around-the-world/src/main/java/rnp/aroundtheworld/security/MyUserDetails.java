@@ -58,4 +58,13 @@ public class MyUserDetails implements UserDetails {
     public boolean isEnabled() {
         return this.user.isActive();
     }
+
+    public String getFirstName() {
+        return user.getFirstName();
+    }
+
+    public String getLastName() {
+        return user.getLastName();
+    }
+
 }

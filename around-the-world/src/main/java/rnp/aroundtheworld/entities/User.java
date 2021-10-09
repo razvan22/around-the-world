@@ -30,19 +30,19 @@ public class User {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(nullable = false)
     private String password;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private boolean isActive;
     private  String roles = "";
-    private String permissions="";
 
 
-    public User(String firstName, String lastName, String email, String password, String roles, String permissions) {
+    public User(String firstName, String lastName, String email, String password, String roles) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.isActive = true;
         this.roles = roles;
-        this.permissions = permissions;
     }
     protected User(){}
 
@@ -102,13 +102,6 @@ public class User {
         this.roles = roles;
     }
 
-    public String getPermissions() {
-        return permissions;
-    }
-
-    public void setPermissions(String permissions) {
-        this.permissions = permissions;
-    }
 
     public List<String> getRoleList(){
         if(roles.length() > 0){
@@ -118,13 +111,5 @@ public class User {
         }
     }
 
-
-    public List<String> gePermissionsList(){
-        if(permissions.length() > 0){
-            return Arrays.asList(permissions.split(","));
-        }else {
-            return new ArrayList<>();
-        }
-    }
 }
 
