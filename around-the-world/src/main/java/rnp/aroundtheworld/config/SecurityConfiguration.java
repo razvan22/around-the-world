@@ -1,16 +1,23 @@
 package rnp.aroundtheworld.config;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import rnp.aroundtheworld.services.Iservices.UserDetailsServiceClass;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import rnp.aroundtheworld.filters.CustomAuthorizationFilter;
+import rnp.aroundtheworld.filters.JwtAuthenticationFilter;
+import rnp.aroundtheworld.filters.JwtAuthorizationFilter;
+import rnp.aroundtheworld.services.Iservices.UserService;
 
 @Configuration
 @EnableWebSecurity
@@ -18,7 +25,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 
     @Autowired
-    private UserDetailsServiceClass userDetailsServiceClass;
+    private UserService userService;
 
 
     @Override
@@ -28,21 +35,27 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/api/v1/user/new").permitAll()
-                .antMatchers("/api/v1/user/all").hasRole("ADMIN")
-                .antMatchers("/api/v1/**").authenticated()
+        http
+                .csrf().disable()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .formLogin()
-                .loginPage("/login");
+                .addFilterBefore(new CustomAuthorizationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilter(new JwtAuthenticationFilter(authenticationManager()))
+                .addFilter(new JwtAuthorizationFilter(authenticationManager(), userService))
+                .authorizeRequests()
+                .antMatchers("/login").permitAll()
+                .antMatchers(HttpMethod.POST ,"/api/v1/user/new").permitAll()
+                .antMatchers("/api/v1/admin/**").hasRole("ADMIN")
+                .antMatchers("/api/v1/user/**").hasRole("USER")
+                .anyRequest().authenticated();
+
     }
 
 
     DaoAuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-        daoAuthenticationProvider.setUserDetailsService(userDetailsServiceClass);
+        daoAuthenticationProvider.setUserDetailsService(userService);
         return daoAuthenticationProvider;
 
     }
@@ -52,14 +65,3 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 }
-
-
-
-//                .antMatchers("/index.html").permitAll()
-//                        .antMatchers("/profile/**").authenticated()
-//                        .antMatchers("/admin/**").hasRole("ADMIN")
-//                        .antMatchers("/management/**").hasAnyRole("ADMIN", "MANAGER")
-//                        .antMatchers("/api/public/test1").hasAuthority("ACCESS_TEST1")
-//                        .antMatchers("/api/public/test2").hasAuthority("ACCESS_TEST2")
-//                        .antMatchers("/api/public/users").hasRole("ADMIN")
-

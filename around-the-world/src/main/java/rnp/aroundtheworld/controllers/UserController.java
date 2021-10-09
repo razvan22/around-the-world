@@ -1,11 +1,10 @@
 package rnp.aroundtheworld.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import rnp.aroundtheworld.entities.User;
-import rnp.aroundtheworld.services.Iservices.UserDetailsServiceClass;
-
-import java.util.List;
+import rnp.aroundtheworld.services.Iservices.UserService;
 
 
 @RestController()
@@ -14,24 +13,21 @@ import java.util.List;
 public class UserController {
 
     @Autowired
-    UserDetailsServiceClass userService;
-
-    @GetMapping("/all")
-    public List<User> getAllUsers(){
-       return userService.findAll();
-    }
+    UserService userService;
 
     @PostMapping("/new")
-    public User addNewUser(@RequestBody User user){
-        return userService.save(user);
+    public void addNewUser(@RequestBody User user){
+        userService.save(user);
     }
 
-    @PutMapping("/user/email/{email}")
+    @GetMapping("/email/{email}")
     public User changeUserEmail(@PathVariable String email){
         return userService.findByUsername(email);
-
     }
 
-
+    @GetMapping
+    public ResponseEntity<String> userTest(){
+        return ResponseEntity.ok().body("User Test endpoint !");
+    }
 
 }

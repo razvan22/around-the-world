@@ -19,14 +19,14 @@ public class MyUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        List<GrantedAuthority> authorities = new ArrayList<>();
 
-        this.user.getRoleList().forEach(role -> {
-            GrantedAuthority grantedAuthority = new SimpleGrantedAuthority("ROLE_" + role);
-            grantedAuthorities.add(grantedAuthority);
+        // Extract list of roles (ROLE_name)
+        this.user.getRoleList().forEach(r -> {
+            GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + r);
+            authorities.add(authority);
         });
-
-        return grantedAuthorities;
+        return authorities;
     }
 
     @Override

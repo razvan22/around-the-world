@@ -13,7 +13,7 @@ import java.util.List;
 
 
 @Service
-public class UserDetailsServiceClass implements UserDetailsService {
+public class UserService implements UserDetailsService {
 
 
     @Autowired
