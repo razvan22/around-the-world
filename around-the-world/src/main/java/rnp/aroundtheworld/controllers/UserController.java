@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import rnp.aroundtheworld.entities.User;
-import rnp.aroundtheworld.services.Iservices.UserService;
+import rnp.aroundtheworld.services.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 

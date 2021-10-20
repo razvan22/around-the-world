@@ -24,6 +24,7 @@ public class User {
     @Column(name="last_name", nullable = false)
     private String lastName;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(unique = true, nullable = false)
     private String email;
 
@@ -33,6 +34,7 @@ public class User {
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private boolean isActive;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private  String roles = "";
 
 

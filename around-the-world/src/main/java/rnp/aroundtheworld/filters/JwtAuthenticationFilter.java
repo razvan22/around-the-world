@@ -12,7 +12,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import rnp.aroundtheworld.entities.LoginModel;
 import rnp.aroundtheworld.security.JwtProperties;
 import rnp.aroundtheworld.security.MyUserDetails;
-import rnp.aroundtheworld.services.Iservices.UserService;
+import rnp.aroundtheworld.services.UserService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;

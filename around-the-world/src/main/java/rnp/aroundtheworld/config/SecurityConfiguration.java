@@ -15,7 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import rnp.aroundtheworld.filters.JwtAuthenticationFilter;
 import rnp.aroundtheworld.filters.JwtAuthorizationFilter;
-import rnp.aroundtheworld.services.Iservices.UserService;
+import rnp.aroundtheworld.services.UserService;
 
 @Configuration
 @EnableWebSecurity
@@ -33,14 +33,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
+        http.cors().and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager()))
                 .addFilter(new JwtAuthorizationFilter(authenticationManager(), userService))
                 .authorizeRequests()
                 .antMatchers("/login").permitAll()
+                .antMatchers("/api/v1/post/**").permitAll()
                 .antMatchers(HttpMethod.POST ,"/api/v1/user/new").permitAll()
                 .antMatchers("/api/v1/admin/**").hasRole("ADMIN")
                 .antMatchers("/api/v1/user/**").hasRole("USER")

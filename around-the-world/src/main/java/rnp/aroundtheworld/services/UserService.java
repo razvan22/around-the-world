@@ -1,4 +1,4 @@
-package rnp.aroundtheworld.services.Iservices;
+package rnp.aroundtheworld.services;
 
 import com.auth0.jwt.JWT;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +48,7 @@ public class UserService implements UserDetailsService {
                 userRepository.save(user);
                 return new ResponseEntity(HttpStatus.CREATED);
             }
-            else return new ResponseEntity(HttpStatus.CONFLICT);
+            else return new ResponseEntity(HttpStatus.BAD_REQUEST);
     }
 
     public List<User> findAll(){

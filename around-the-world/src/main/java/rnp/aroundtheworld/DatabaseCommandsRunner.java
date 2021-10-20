@@ -6,6 +6,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import rnp.aroundtheworld.entities.User;
+import rnp.aroundtheworld.repositories.PostRepository;
 import rnp.aroundtheworld.repositories.UserRepository;
 import java.util.Arrays;
 import java.util.List;
@@ -15,10 +16,13 @@ public class DatabaseCommandsRunner implements CommandLineRunner {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    PostRepository postRepository;
 
 
     @Override
     public void run(String... args) throws Exception {
+//        postRepository.deleteAll();
 //        userRepository.deleteAll();
 
         User admin = new User(

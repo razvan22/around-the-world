@@ -7,3 +7,4 @@ public class JwtProperties {
     public static final String HEADER_STRING = "Authorization";
 
 }
+
