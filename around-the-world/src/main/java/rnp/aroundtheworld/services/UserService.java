@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import rnp.aroundtheworld.entities.User;
 import rnp.aroundtheworld.repositories.UserRepository;
+import rnp.aroundtheworld.response.CustomHttpResponse;
 import rnp.aroundtheworld.security.JwtProperties;
 import rnp.aroundtheworld.security.MyUserDetails;
 
@@ -44,11 +45,15 @@ public class UserService implements UserDetailsService {
 
     public ResponseEntity save(User user){
             if (!isEmailTaken(user.getEmail())){
-                user.setPassword( new BCryptPasswordEncoder().encode(user.getPassword()));
-                userRepository.save(user);
-                return new ResponseEntity(HttpStatus.CREATED);
+                if (user.getPassword().length() > 8){
+                    user.setPassword( new BCryptPasswordEncoder().encode(user.getPassword()));
+                    userRepository.save(user);
+                    return CustomHttpResponse.generateResponse(String.format("New user with username %s has ben created.",user.getEmail()),HttpStatus.CREATED);
+                } else {
+                    return CustomHttpResponse.generateResponse("Password should be at least 8 characters long !",HttpStatus.CONFLICT);
+                }
             }
-            else return new ResponseEntity(HttpStatus.BAD_REQUEST);
+            else return CustomHttpResponse.generateResponse("Email already in use",HttpStatus.CONFLICT);
     }
 
     public List<User> findAll(){
