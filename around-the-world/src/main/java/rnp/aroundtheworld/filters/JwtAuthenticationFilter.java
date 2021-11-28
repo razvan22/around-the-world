@@ -37,7 +37,6 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         //Grab credentials and map them to LoginModel
         LoginModel credentials = null;
-
         try {
             credentials = new ObjectMapper().readValue(request.getInputStream(), LoginModel.class);
         } catch (IOException e){

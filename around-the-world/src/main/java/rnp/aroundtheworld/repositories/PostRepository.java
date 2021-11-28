@@ -1,9 +1,9 @@
 package rnp.aroundtheworld.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 import rnp.aroundtheworld.entities.Post;
 
-import java.util.UUID;
-
-public interface PostRepository extends JpaRepository<Post, UUID> {
+@Repository
+public interface PostRepository extends JpaRepository<Post, String> {
 }

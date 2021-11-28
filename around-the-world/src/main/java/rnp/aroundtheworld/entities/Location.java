@@ -19,4 +19,12 @@ public class Location {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @OneToMany(mappedBy = "location")
     private List<Post> posts;
+
+    public Location(String continent, String country, String address) {
+        this.continent = continent;
+        this.country = country;
+        this.address = address;
+    }
+
+    public Location() {}
 }

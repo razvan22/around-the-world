@@ -42,6 +42,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login").permitAll()
                 .antMatchers("/api/v1/post/**").permitAll()
                 .antMatchers(HttpMethod.POST ,"/api/v1/user/new").permitAll()
+                .antMatchers("/uploads/*").permitAll()
                 .antMatchers("/api/v1/admin/**").hasRole("ADMIN")
                 .antMatchers("/api/v1/user/**").hasRole("USER")
                 .anyRequest().authenticated();
@@ -61,4 +62,22 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     PasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
     }
+
+//    @Bean
+//    public HttpFirewall allowUrlEncodedSlashHttpFirewall() {
+//        StrictHttpFirewall firewall = new StrictHttpFirewall();
+//        firewall.setAllowUrlEncodedSlash(true);
+//        firewall.setAllowSemicolon(true);
+//        firewall.setAllowUrlEncodedDoubleSlash(true);
+//        return firewall;
+//    }
+//
+//    @Override
+//    public void configure(WebSecurity web) throws Exception {
+//        super.configure(web);
+//        // @formatter:off
+//        web.httpFirewall(allowUrlEncodedSlashHttpFirewall());
+//
+//    }
+
 }

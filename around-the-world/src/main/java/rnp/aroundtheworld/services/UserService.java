@@ -61,21 +61,23 @@ public class UserService implements UserDetailsService {
     }
 
     public boolean isUserAuthenticated(HttpServletRequest request) {
-        String token = request.getHeader(JwtProperties.HEADER_STRING)
-                .replace(JwtProperties.TOKEN_PREFIX,"");
+        if (request.getHeader(JwtProperties.HEADER_STRING) != null) {
+            String token = request.getHeader(JwtProperties.HEADER_STRING)
+                    .replace(JwtProperties.TOKEN_PREFIX,"");
 
-        String userName = JWT.require(HMAC512(JwtProperties.SECRET.getBytes()))
-                .build()
-                .verify(token)
-                .getSubject();
+            String userName = JWT.require(HMAC512(JwtProperties.SECRET.getBytes()))
+                    .build()
+                    .verify(token)
+                    .getSubject();
+            if (userName != null) {
+                User user = findByUsername(userName);
+                MyUserDetails principal = new MyUserDetails(user);
+                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
 
-        if (userName != null) {
-            User user = findByUsername(userName);
-            MyUserDetails principal = new MyUserDetails(user);
-            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
-
-            return auth.isAuthenticated();
+                return auth.isAuthenticated();
+            }
         }
+
         return false;
     }
 

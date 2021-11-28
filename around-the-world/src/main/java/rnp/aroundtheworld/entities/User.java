@@ -1,6 +1,7 @@
 package rnp.aroundtheworld.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
@@ -32,9 +33,9 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonIgnore
     private boolean isActive;
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonIgnore
     private  String roles = "";
 
 
@@ -46,6 +47,13 @@ public class User {
         this.isActive = true;
         this.roles = roles;
     }
+
+    public User(long id, String firstName, String lastName) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
+
     protected User(){}
 
     public long getId() {
@@ -88,6 +96,7 @@ public class User {
         this.password = password;
     }
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public boolean isActive() {
         return isActive;
     }
@@ -95,7 +104,7 @@ public class User {
     public void setActive(boolean active) {
         isActive = active;
     }
-
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public String getRoles() {
         return roles;
     }
@@ -104,7 +113,7 @@ public class User {
         this.roles = roles;
     }
 
-
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     public List<String> getRoleList(){
         if(roles.length() > 0){
             return Arrays.asList(roles.split(","));

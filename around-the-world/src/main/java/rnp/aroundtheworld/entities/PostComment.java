@@ -23,4 +23,20 @@ public class PostComment {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne
     private Post post;
+
+    public PostComment(String authorName, Date commentDate, String comment, Post post) {
+        this.authorName = authorName;
+        this.commentDate = commentDate;
+        this.comment = comment;
+        this.post = post;
+    }
+
+    public PostComment(String comment, Post post) {
+        this.comment = comment;
+        this.post = post;
+    }
+
+    public PostComment() {
+    }
 }
+
