@@ -60,7 +60,7 @@ public class MyUserDetails implements UserDetails {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Override
     public boolean isEnabled() {
-        return this.user.isActive();
+        return this.user.isActive() == 1;
     }
 
     public String getFirstName() {

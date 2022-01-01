@@ -34,19 +34,10 @@ public class User {
     private String password;
 
     @JsonIgnore
-    private boolean isActive;
+    private int isActive = 1;
     @JsonIgnore
     private  String roles = "";
 
-
-    public User(String firstName, String lastName, String email, String password, String roles) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-        this.isActive = true;
-        this.roles = roles;
-    }
 
     public User(long id, String firstName, String lastName) {
         this.id = id;
@@ -54,7 +45,15 @@ public class User {
         this.lastName = lastName;
     }
 
-    protected User(){}
+    public User(){}
+
+    public User(String firstName, String lastName, String email, String password, String roles) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+    }
 
     public long getId() {
         return id;
@@ -97,11 +96,11 @@ public class User {
     }
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    public boolean isActive() {
+    public int isActive() {
         return isActive;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(int active) {
         isActive = active;
     }
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
