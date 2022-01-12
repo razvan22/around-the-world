@@ -11,12 +11,15 @@ public class PostRating {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
+    private Integer rating;
     @ManyToOne
     private User author;
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @ManyToOne
     private Post post;
-    private Integer rating;
+
+    public PostRating() {
+    }
 
     public PostRating(User author, Post post, Integer rating) {
         this.author = author;
@@ -24,6 +27,5 @@ public class PostRating {
         this.rating = rating;
     }
 
-    public PostRating() {
-    }
+
 }

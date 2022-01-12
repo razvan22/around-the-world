@@ -57,6 +57,6 @@ public class PostController {
 
     @PostMapping("/rating")
     private ResponseEntity postRating(@RequestBody PostRating rating, HttpServletRequest request){
-        return postService.addNewRating(rating, request);
+        return postService.ratePost(rating, request);
     }
 }

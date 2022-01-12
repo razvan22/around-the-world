@@ -39,6 +39,7 @@ public class User {
     private  String roles = "";
 
 
+
     public User(long id, String firstName, String lastName) {
         this.id = id;
         this.firstName = firstName;
@@ -54,6 +55,12 @@ public class User {
         this.password = password;
         this.roles = roles;
     }
+
+    public void setIsActive(int isActive) {
+        this.isActive = isActive;
+    }
+
+
 
     public long getId() {
         return id;
@@ -121,5 +128,8 @@ public class User {
         }
     }
 
+    public int getIsActive() {
+        return isActive;
+    }
 }
 

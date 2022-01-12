@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 import rnp.aroundtheworld.entities.PostRating;
 
 @Repository
-public interface PostRatingRepository extends JpaRepository<PostRating, Integer> {
+public interface PostRatingRepository extends JpaRepository<PostRating,Integer> {
 }

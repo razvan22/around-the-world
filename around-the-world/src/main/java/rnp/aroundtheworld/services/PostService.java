@@ -3,9 +3,12 @@ package rnp.aroundtheworld.services;
 import assets.MediaService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.MultipartConfigFactory;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.unit.DataSize;
 import org.springframework.web.multipart.MultipartFile;
 import rnp.aroundtheworld.entities.*;
 import rnp.aroundtheworld.repositories.*;
@@ -48,8 +51,6 @@ public class PostService {
                 postImageRepository.save(postImage);
             }
 
-
-
             return new ResponseEntity<Post>(post, HttpStatus.CREATED);
 
         } else return new ResponseEntity("Bad request", HttpStatus.BAD_REQUEST);
@@ -61,7 +62,8 @@ public class PostService {
         JSONObject rwaPost = new JSONObject(postString);
         JSONObject rwaLocation = rwaPost.getJSONObject("location");
         String postID =  UUID.randomUUID().toString();
-         List<PostImage> imageList = new ArrayList<>();
+        List<PostImage> imageList = new ArrayList<>();
+        List<PostRating> postRatingList = new ArrayList<>();
 
         Post post = new Post(
                 postID,
@@ -69,7 +71,8 @@ public class PostService {
                 locationRepository.save( new Location(rwaLocation.getString("continent"), rwaLocation.getString("country"), rwaLocation.getString("address")))     ,
                 rwaPost.getString("title"),
                 rwaPost.getString("description"),
-                imageList
+                imageList,
+                postRatingList
                  );
 
         return post;
@@ -96,17 +99,27 @@ public class PostService {
         } else return new ResponseEntity("Bad request", HttpStatus.BAD_REQUEST);
     }
 
-    public ResponseEntity addNewRating(PostRating rating, HttpServletRequest request){
-        if (userService.isUserAuthenticated(request)){
+    public ResponseEntity ratePost(PostRating rating, HttpServletRequest request){
+        String postToRateId = rating.getPost().getId();
+        if (saveNewRating(rating, request)){
+            postRepository.findById(postToRateId);
+            return new ResponseEntity(HttpStatus.CREATED);
+        }
+        return new ResponseEntity("Bad request", HttpStatus.BAD_REQUEST);
+    }
+
+    private boolean saveNewRating(PostRating rating, HttpServletRequest request){
+        if (userService.isUserAuthenticated(request)) {
             String userName = userService.getUserNameFromJwtToken(request);
-            User user =  userService.findByUsername(userName);
+            User user = userService.findByUsername(userName);
             Post post = postRepository.getById(rating.getPost().getId());
             PostRating newRating = new PostRating(user, post, rating.getRating());
-            postRatingRepository.save(newRating);
-
-            return new ResponseEntity<Post>(post,HttpStatus.CREATED);
-        } else return new ResponseEntity("Bad request", HttpStatus.BAD_REQUEST);
+            return postRatingRepository.save(newRating).getAuthor().getFirstName() != null;
+        }
+        return false;
     }
+
+
 
     public List<Post> getAll(){
         return postRepository.findAll();
@@ -126,4 +139,13 @@ public class PostService {
                 .collect(Collectors.toList());
     }
 
+
+    @Bean
+    public javax.servlet.MultipartConfigElement multipartConfigElement() {
+        MultipartConfigFactory factory = new MultipartConfigFactory();
+        factory.setMaxFileSize(DataSize.ofBytes(100000000L));
+        factory.setMaxRequestSize(DataSize.ofBytes(100000000L));
+        return factory.createMultipartConfig();
+    }
 }
+

@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 import rnp.aroundtheworld.entities.User;
 import rnp.aroundtheworld.repositories.PostRepository;
 import rnp.aroundtheworld.repositories.UserRepository;
-import java.util.Arrays;
-import java.util.List;
 
 @Service
 public class DatabaseCommandsRunner implements CommandLineRunner {
@@ -25,25 +23,27 @@ public class DatabaseCommandsRunner implements CommandLineRunner {
 //        postRepository.deleteAll();
 //        userRepository.deleteAll();
 
-        User admin = new User(
-                "Jon",
-                "Smith",
-                "jon@gmail.com",
-                new BCryptPasswordEncoder().encode("admin"),
-                "ADMIN"
-
-        );
+//        User admin = new User(
+//                "Jon",
+//                "Smith",
+//                "jon@gmail.com",
+//                new BCryptPasswordEncoder().encode("admin"),
+//                "ADMIN"
+//
+//        );
 
         User user = new User(
                 "Razvan-Petru",
                 "Nechifor",
                 "razvan@gmail.com",
-                 new BCryptPasswordEncoder().encode("password"),
+                 new BCryptPasswordEncoder().encode("password22"),
                 "USER"
 
         );
 
-        List<User> defaultUsers = Arrays.asList(admin,user);
+//        userRepository.save(user);
+
+//        List<User> defaultUsers = Arrays.asList(admin,user);
 //        userRepository.saveAll(defaultUsers);
     }
 }

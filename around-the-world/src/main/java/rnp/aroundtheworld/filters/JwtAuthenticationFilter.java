@@ -39,6 +39,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         LoginModel credentials = null;
         try {
             credentials = new ObjectMapper().readValue(request.getInputStream(), LoginModel.class);
+
         } catch (IOException e){
             e.printStackTrace();
         }
@@ -49,7 +50,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 credentials.getPassword(),
                 new ArrayList<>()
         );
+
         Authentication auth = authenticationManager.authenticate(authenticationToken);
+        System.out.printf("%n auth name %s ", auth.getName());
         return auth;
     }
 

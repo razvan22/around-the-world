@@ -18,12 +18,24 @@ public class PostImage {
     @ManyToOne
     private Post post;
 
+    public PostImage() {
+    }
+
     public PostImage(String url, Post post) {
         this.url = url;
         this.post = post;
     }
 
-    public PostImage() {
+    public Integer getId() {
+        return id;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public Post getPost() {
+        return post;
     }
 }
 

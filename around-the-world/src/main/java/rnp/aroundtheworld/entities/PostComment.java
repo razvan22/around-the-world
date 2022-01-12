@@ -24,6 +24,9 @@ public class PostComment {
     @ManyToOne
     private Post post;
 
+    public PostComment() {
+    }
+
     public PostComment(String authorName, Date commentDate, String comment, Post post) {
         this.authorName = authorName;
         this.commentDate = commentDate;
@@ -36,7 +39,24 @@ public class PostComment {
         this.post = post;
     }
 
-    public PostComment() {
+    public Integer getId() {
+        return id;
+    }
+
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public Date getCommentDate() {
+        return commentDate;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public Post getPost() {
+        return post;
     }
 }
 

@@ -27,4 +27,24 @@ public class Location {
     }
 
     public Location() {}
+
+    public Integer getId() {
+        return id;
+    }
+
+    public String getContinent() {
+        return continent;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public List<Post> getPosts() {
+        return posts;
+    }
 }

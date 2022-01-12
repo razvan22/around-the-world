@@ -33,7 +33,6 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
         User user = findByUsername(s);
         MyUserDetails myUserDetails = new MyUserDetails(user);
-
         return myUserDetails;
     }
 
@@ -42,6 +41,16 @@ public class UserService implements UserDetailsService {
         return userRepository.findByEmail(email);
     }
 
+    public boolean isAccountLocked(String username){
+        return findByUsername(username).isActive() != 1;
+    }
+
+    public void lockUserAccount(String userName){
+        User userToLock = userRepository.findByEmail(userName);
+        userToLock.setActive(0);
+        System.out.println("LOCKING ACCOUNT WITH USERNAME :" + userName);
+        userRepository.save(userToLock);
+    }
 
     public ResponseEntity save(User user){
             if (!isEmailTaken(user.getEmail())){
